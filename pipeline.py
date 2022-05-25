@@ -18,4 +18,4 @@ sentence_vectors = np.array(list(zip(x1, x2))).reshape(len(x1), 2)
 
 kmeans = KMeansClustering(sentence_vectors, max_iter=300)
 
-kmeans.get_optimal_k(1,10, plot_elbow=True)
+kmeans.perform_elbow(1,10, plot_elbow=True)
