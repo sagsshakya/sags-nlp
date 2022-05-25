@@ -15,6 +15,8 @@ from scipy.spatial.distance import cdist
 from scipy.cluster.vq import vq
 import numpy as np
 import matplotlib.pyplot as plt
+from warnings import filterwarnings
+filterwarnings(action = 'ignore')
 
 class KMeansClustering:
     def __init__(self, sentence_vectors, max_iter: int = 300, save_dir: str = r'images') -> None:
@@ -57,7 +59,7 @@ class KMeansClustering:
         Plots the elbow curve.
         '''
         plt.style.use('classic')
-        plt.plot(K, distortions, 'bx-')
+        plt.plot(K, distortions, color = 'steelblue', marker = 'X')
         plt.xlabel('k')
         plt.ylabel('Distortion')
         plt.title('The Elbow Method showing the optimal k')
