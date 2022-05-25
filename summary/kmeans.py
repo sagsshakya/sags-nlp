@@ -64,7 +64,6 @@ class KMeansClustering:
         plt.ylabel('Distortion')
         plt.title('The Elbow Method showing the optimal k')
         plt.savefig(path.join(self.save_dir, 'kmeans_elbow.png'), dpi = 300)
-        plt.show()
 
     def get_optimal_k(self, lower_bound: int = 1, upper_bound: int = 10, plot_elbow: bool = False):
         distortions = []
