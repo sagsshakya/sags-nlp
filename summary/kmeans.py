@@ -68,6 +68,7 @@ class KMeansClustering:
         plt.xlabel('Number of clusters (k)')
         plt.ylabel('Distortion')
         plt.title('The Elbow Method showing the optimal k')
+        plt.xticks(K)
         plt.savefig(path.join(self.save_dir, 'kmeans_elbow.png'), dpi = 300)
 
     def _dist_point_line(self, point: Tuple[float], coefficients: Tuple[float]) -> float:
