@@ -56,17 +56,19 @@ class KMeansClustering:
         '''
         Plots the elbow curve.
         '''
-        plt.style.use('classic')
-        plt.plot(K, distortions, color = 'steelblue', marker = 'X')
-        plt.plot((K[0], K[-1]), (distortions[0], distortions[-1]), color = 'tomato', alpha = 0.6, linewidth = 1.2, linestyle = 'dotted')
-        
-        # Plot the optimal value of K.
-        k_optimal, distortion_optimal = self.get_optimal_k(K, distortions)
-        plt.scatter([k_optimal], [distortion_optimal], marker = 'D', color = 'red', s = 50)
-        plt.xlabel('Number of clusters (k)')
-        plt.ylabel('Intra-cluster Variability')
-        plt.xticks(K)
-        plt.savefig(path.join(self.save_dir, 'kmeans_elbow.png'), dpi = 300)
+        with plt.ioff():
+            plot2 = plt.figure(2)
+            plt.style.use('classic')
+            plt.plot(K, distortions, color = 'steelblue', marker = 'X')
+            plt.plot((K[0], K[-1]), (distortions[0], distortions[-1]), color = 'tomato', alpha = 0.6, linewidth = 1.2, linestyle = 'dotted')
+            
+            # Plot the optimal value of K.
+            k_optimal, distortion_optimal = self.get_optimal_k(K, distortions)
+            plt.scatter([k_optimal], [distortion_optimal], marker = 'D', color = 'red', s = 50)
+            plt.xlabel('Number of clusters (k)')
+            plt.ylabel('Intra-cluster Variability')
+            plt.xticks(K)
+            plt.savefig(path.join(self.save_dir, 'kmeans_elbow.png'), dpi = 300)
 
     def _dist_point_line(self, point: Tuple[float], coefficients: Tuple[float]) -> float:
         """
