@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block head %} 
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/summarizer.css') }}">
+    <title>Summarizer</title>
+{% endblock %}
+
+{% block body %}
+    <h1>Extractive Summarization for Nepali Texts</h1>
+    <h3>This is a demo for generating Extractive Summary for a piece of Nepali text using unsupervised learning mechanism.</h3>
+    
+    <hr>
+    <br>
+    
+    <h3>Input Text</h3>
+    <br>
+    <form action="/summarize" method="POST">
+        <textarea id="input_text" name="input_text" rows="5" cols="50" placeholder="Sample text here.">
+        </textarea>
+        <br><br>
+        <input id="Submit" type="submit" value="SUBMIT">
+        <input id="Reset" type="reset" value="RESET">
+    </form>
+{% endblock %}
