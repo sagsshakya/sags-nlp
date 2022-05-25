@@ -9,7 +9,6 @@ Date:   23/5/2022, 4:32:47 pm
 # Imports
 from datetime import datetime
 from genericpath import isfile
-import os
 from random import randint
 from flask import Flask, redirect, render_template, request
 from flask_sqlalchemy import SQLAlchemy
@@ -17,6 +16,8 @@ from os import makedirs
 from os.path import exists, join, isfile
 import pandas as pd
 from numpy import nan
+from warnings import filterwarnings
+filterwarnings(action = 'ignore')
 
 # Local Modules.
 from utilities.utils import write_id_to_file
@@ -30,10 +31,10 @@ content_path = join('database', 'content.tsv')
 if not isfile(content_path):
     print(f"No file named {content_path}.\nConsider creating a new file in {content_path}...\n")
     # Blank Dataframe.
-    df_content = pd.DataFrame({"id" : 0, "date" : "2022-01-01", "text" : "sample text", "summary" : "Sample summary"})
+    dummy_data = {"id" : 0, "date" : "2022-01-01", "text" : "sample text", "summary" : "Sample summary"}
+    df_content = pd.DataFrame([list(dummy_data.values())], columns = tuple(dummy_data.keys()))
     df_content.to_csv(content_path, sep = '\t', encoding = "utf-8", index = None)
-else: 
-    df_content = pd.read_csv(content_path, encoding = True, skip_blank_lines = True, delimiter = '\t')
+
 
 # Create Flask app.
 app = Flask(__name__)
@@ -47,6 +48,7 @@ def index():
 # Extractive Summarization.
 @app.route("/summarize", methods = ['GET', 'POST'])
 def summarize():
+    df_content = pd.read_csv(content_path, encoding = 'utf-8', skip_blank_lines = True, delimiter = '\t')
 
     if request.method == 'POST':
 
@@ -76,6 +78,9 @@ def summarize():
 
         df_content = df_content.append(info_dict, ignore_index = True)
 
+        # Remove dummy row (first row).
+        if df_content.iloc[0,0] == 0:
+            df_content = df_content.iloc[1:, :]
 
         # Store in a TSV file.
         df_content.to_csv(content_path, encoding = 'utf-8', header = True, index = None, sep = '\t')
@@ -83,8 +88,8 @@ def summarize():
         return redirect("/summarize")
 
     else:
-
-        return render_template("summary.html")
+        current_info = df_content.iloc[-1, :].to_dict()
+        return render_template("summary.html", results = current_info)
 
 if __name__ == "__main__":
     app.run(debug = True)
