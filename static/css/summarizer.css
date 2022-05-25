@@ -1,0 +1,16 @@
+textarea {
+    width: 500px;
+    height: 200px;
+    padding: 0;
+    margin: 0;
+    border: none;
+    outline: none;
+    background: whitesmoke;
+    resize: none;
+ }
+
+input {
+    border: none;
+    background: rgb(181, 181, 196);
+    margin: 0;
+ }
