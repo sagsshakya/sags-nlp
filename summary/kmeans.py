@@ -60,7 +60,7 @@ class KMeansClustering:
         '''
         plt.style.use('classic')
         plt.plot(K, distortions, color = 'steelblue', marker = 'X')
-        plt.xlabel('k')
+        plt.xlabel('Number of clusters (k)')
         plt.ylabel('Distortion')
         plt.title('The Elbow Method showing the optimal k')
         plt.savefig(path.join(self.save_dir, 'kmeans_elbow.png'), dpi = 300)
@@ -70,8 +70,8 @@ class KMeansClustering:
         K = range(lower_bound, upper_bound + 1)
         for kk in K:
             kmeansModel = self._clustering(n_clusters = kk, return_closest = False)
-            distortion = sum(np.min(cdist(self.sentence_vectors, kmeansModel.cluster_centers_, 'euclidean'), axis=1)) / self.num_sentences
-            distortions.append(distortion)
+            #distortion = sum(np.min(cdist(self.sentence_vectors, kmeansModel.cluster_centers_, 'euclidean'), axis=1)) / self.num_sentences
+            distortions.append(kmeansModel.inertia_)
 
         if plot_elbow:
             assert len(K) == len(distortions)
