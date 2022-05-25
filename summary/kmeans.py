@@ -102,7 +102,21 @@ class KMeansClustering:
         return K, distortions
 
     def get_optimal_k(self, K: List[int], distortions: List[float]) -> tuple:
-        # Get optimal K.
+        """
+        Calculates the optimal value of number of clusters i.e k 
+        by maximizing the perpendicular distance between the points in the Elbow Curve and the straight line joining 
+        the extreme ends of the Elbow Curve (denoted by red dotted line in the plot).
+
+        The perpendicular distance between a point (x0, y0) and a straight line of the form ax + by + c = 0 is given by:
+            r = abs(a * x0 + b * y0 + c) / sqrt(a**2 + b**2)
+            
+        Args:
+            K (List[int]): List of experimental cluster numbers.
+            distortions (List[float]): Intra cluster variability for each cluster number.
+
+        Returns:
+            tuple: (optimal value of k, distortion corresponding to this k)
+        """        
         a = distortions[0] - distortions[-1]
         b = K[-1] - K[0]
         c1 = K[0] * distortions[-1]
