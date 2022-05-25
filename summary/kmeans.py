@@ -33,10 +33,8 @@ class KMeansClustering:
         Performs KMeans Clustering on the sentence vectors.
 
         Parameters:
-        sentence_vectors -- Array containing the n - dimensional sentence embeddings.
         n_clusters -- Number of clusters (k).
-        max_iter = Max. number of iterations to be performed.
-        return_labels -- bool; whether to return the labels of the sentences as per the clustering model.
+        return_closest -- Whether to return the indices of the samples which are closest to their cluster centroids.
 
         Returns:
         labels of the sentences and the indices of those sentence vectors which are 
@@ -48,7 +46,7 @@ class KMeansClustering:
         if return_closest:
             # Return the indices of those sentence vectors which are the closest to their corresponding cluster centroid.
             centroids = kmeans.cluster_centers_             # N-dimensional array with your centroids.
-            points = self.sentence_vectors                       # N-dimensional array with your data points.
+            points = self.sentence_vectors                  # N-dimensional array with your data points.
             closest, distances = vq(centroids, points)
             return closest
         else:
@@ -87,7 +85,18 @@ class KMeansClustering:
         denominator = np.sqrt(a**2 + b**2)
         return abs(numerator / denominator)
 
-    def perform_elbow(self, lower_bound: int = 1, upper_bound: int = 10, plot_elbow: bool = False):
+    def perform_elbow(self, lower_bound: int = 1, upper_bound: int = 10, plot_elbow: bool = False) -> Tuple[List[int], List[float]]:
+        """
+        Performs Elbow method and plots the Elbow Curve for a given range of experimental values of cluster numbers.
+
+        Args:
+            lower_bound (int, optional): Lower bound of Cluster number. Defaults to 1.
+            upper_bound (int, optional): Upper bound of Cluster number. Defaults to 10.
+            plot_elbow (bool, optional): Whether to create/save the elbow plot. Defaults to False. If True, it saves the plot in the provided "saved_dir".
+
+        Returns:
+            Tuple[List[int], List[float]]: (experimental values of k, intra cluster variability for each k)
+        """        
         distortions = []
         K = range(lower_bound, upper_bound + 1)
         for kk in K:
@@ -109,35 +118,32 @@ class KMeansClustering:
 
         The perpendicular distance between a point (x0, y0) and a straight line of the form ax + by + c = 0 is given by:
             r = abs(a * x0 + b * y0 + c) / sqrt(a**2 + b**2)
-            
+
         Args:
             K (List[int]): List of experimental cluster numbers.
             distortions (List[float]): Intra cluster variability for each cluster number.
 
         Returns:
             tuple: (optimal value of k, distortion corresponding to this k)
-        """        
+        """       
+        # Obtain coefficients of the straight line. 
         a = distortions[0] - distortions[-1]
         b = K[-1] - K[0]
         c1 = K[0] * distortions[-1]
         c2 = K[-1] * distortions[0]
         c = c1  -c2
 
+        # Calculate the perpn distances of all points of elbow curve with respect to the straight line ax + by + c = 0.
         distances = []
         for kk, dist in zip(K, distortions):
             point = (kk, dist)
             coeff = (a, b, c)
             distances.append(self._dist_point_line(point, coeff))
 
-        # Get the index of the minimum value of the perpn distance.
+        # Get the index of the maximum value of the perpn distance.
         index_max = max(range(len(distances)), key=distances.__getitem__)
 
         k_optimal = K[index_max]
         distortion_optimal = distortions[index_max]
 
         return k_optimal, distortion_optimal
-
-    def get_summary_sentence_ids(self):
-        closest = self._clustering(n_clusters = self.k_optimal, return_closest = True)
-        closest = sorted(closest)           # IDs sorted by scores.
-        return closest

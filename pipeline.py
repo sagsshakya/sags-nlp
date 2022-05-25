@@ -18,4 +18,15 @@ sentence_vectors = np.array(list(zip(x1, x2))).reshape(len(x1), 2)
 
 kmeans = KMeansClustering(sentence_vectors, max_iter=300)
 
-kmeans.perform_elbow(1,10, plot_elbow=True)
+K, distortions = kmeans.perform_elbow(1,10, plot_elbow=True)
+
+k_optimal, distortion_optimal = kmeans.get_optimal_k(K, distortions)
+
+def get_summary_sentence_ids(k_optimal: int):
+    closest = kmeans._clustering(n_clusters = k_optimal, return_closest = True)
+    closest = sorted(closest)           # IDs sorted by scores.
+    return closest
+
+closest = get_summary_sentence_ids(k_optimal)
+
+print(closest)
