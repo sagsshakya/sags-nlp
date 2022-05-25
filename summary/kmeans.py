@@ -48,7 +48,7 @@ class KMeansClustering:
             centroids = kmeans.cluster_centers_             # N-dimensional array with your centroids.
             points = self.sentence_vectors                  # N-dimensional array with your data points.
             closest, distances = vq(centroids, points)
-            return closest
+            return closest, kmeans
         else:
             return kmeans
 
