@@ -66,7 +66,7 @@ class KMeansClustering:
         k_optimal, distortion_optimal = self.get_optimal_k(K, distortions)
         plt.scatter([k_optimal], [distortion_optimal], marker = 'D', color = 'red', s = 50)
         plt.xlabel('Number of clusters (k)')
-        plt.ylabel('Distortion')
+        plt.ylabel('Intra-cluster Variability')
         plt.title('The Elbow Method showing the optimal k')
         plt.xticks(K)
         plt.savefig(path.join(self.save_dir, 'kmeans_elbow.png'), dpi = 300)
