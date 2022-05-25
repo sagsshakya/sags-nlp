@@ -9,6 +9,7 @@ Description:
     Applies Elbow method to determine the optimal number of clusters as well.
 """
 
+from os import makedirs, path
 from sklearn.cluster import KMeans
 from scipy.spatial.distance import cdist
 from scipy.cluster.vq import vq
@@ -16,11 +17,14 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 class KMeansClustering:
-    def __init__(self, sentence_vectors, max_iter: int = 300) -> None:
+    def __init__(self, sentence_vectors, max_iter: int = 300, save_dir: str = r'images') -> None:
         self.sentence_vectors = sentence_vectors            # Shape: (num_sentences, num_features)
         self.max_iter = max_iter
         self.num_sentences = sentence_vectors.shape[0]
         self.k_optimal = 5                                  # Find a better way of selecting this.
+        
+        makedirs(save_dir, exist_ok=True)
+        self.save_dir = save_dir
 
     def _clustering(self, n_clusters: int, return_closest: bool = False):
         '''
@@ -52,10 +56,12 @@ class KMeansClustering:
         '''
         Plots the elbow curve.
         '''
+        plt.style.use('classic')
         plt.plot(K, distortions, 'bx-')
         plt.xlabel('k')
         plt.ylabel('Distortion')
         plt.title('The Elbow Method showing the optimal k')
+        plt.savefig(path.join(self.save_dir, 'kmeans_elbow.png'), dpi = 300)
         plt.show()
 
     def get_optimal_k(self, lower_bound: int = 1, upper_bound: int = 10, plot_elbow: bool = False):
