@@ -1,24 +1,50 @@
 {% extends 'base.html' %}
 
-{% block head %} 
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/summarizer.css') }}">
-    <title>Summarizer</title>
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/summarizer.css')
+    }}">
+<title>Summarizer</title>
 {% endblock %}
 
 {% block body %}
-    <h1>Extractive Summarization for Nepali Texts</h1>
-    <h3>This is a demo for generating Extractive Summary for a piece of Nepali text using unsupervised learning mechanism.</h3>
-    
-    <hr>
-    <br>
-    
-    <h3>Input Text</h3>
-    <br>
-    <form action="/summarize" method="POST">
-        <textarea id="input_text" name="input_text" rows="5" cols="50" placeholder="Sample text here.">
-        </textarea>
-        <br><br>
-        <input id="Submit" type="submit" value="SUBMIT">
-        <input id="Reset" type="reset" value="RESET">
-    </form>
+<h1>Extractive Summarization for Nepali Texts</h1>
+<h3>This is a demo for generating Extractive Summary for a piece of Nepali text
+    using unsupervised learning mechanism.</h3>
+
+<hr>
+<br>
+
+<h3>Input Text</h3>
+<br>
+<form action="/summarize" method="POST">
+    <textarea id="input_text" name="input_text" rows="5" cols="50"
+        placeholder="Sample text here.">
+    </textarea>
+    <br><br>
+    <input id="Submit" type="submit" value="SUBMIT">
+    <input id="Reset" type="reset" value="RESET">
+</form>
+
+<hr>
+
+<h1>Text info:</h1>
+<h2>Text ID : {{ results.id }}</h2>
+<br>
+
+<h2>Date Posted: {{ results.date }}</h2>
+<hr>
+<br>
+
+<h1>Text that you inserted</h1>
+<br>
+<p>{{ results.text }}</p>
+
+<br>
+<hr>
+<br>
+
+<h1>Text summary</h1>
+<br>
+<p>N/A</p>
+
 {% endblock %}
