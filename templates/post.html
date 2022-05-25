@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block head %} 
+<title>Posts</title>
+{% endblock %}
+
+{% block body %} 
+<h1>
+    All posts here.
+</h1>
+
+<p>
+    This is how you can loop over an iterable (a list of dict).
+</p>
+
+{%for post in posts%}
+    <h2>Name</h2>
+    <p>{{ post.name }}</p>
+    <br>
+    
+    <h2>Country</h2>
+    <p>{{ post.country }}</p>
+    <br>
+
+    {% if post.city %}
+    <h2>City</h2>
+        <p>{{ post.city }}</p>
+    {% else %}
+        <h2>City</h2>
+        <p>N/A </p>
+    {% endif %}
+    <br>
+{%endfor%}
+
+{% endblock %}
