@@ -8,11 +8,13 @@ Description:
     Helper Functions for the project.
 """
 
+from typing import List, Union
 from os import makedirs
 import os
 from random import randint
 import re
 from string import ascii_lowercase, ascii_uppercase, punctuation
+from sklearn.manifold import TSNE
 
 from matplotlib import pyplot as plt
 import numpy as np
@@ -94,4 +96,18 @@ def remove_unnecessary_characters(sentence):
 
 def generate_word_tokens(sentence):
     return sentence.split()
+
+def project_to_2d(sentence_vectors: Union[List[List[float]], np.array], output_dim: int = 2) -> np.array:
+    """
+    Project a high dimensional input vector to low dimensional (2D or 3D).
+
+    Args:
+        sentence_vectors (Union[List[List[float]], np.array]): Sentence Vectors os shape (num_sentences, input_dim).
+        output_dim (int, optional): Number of output dimensions to project. Defaults to 2.
+
+    Returns:
+        np.array: t-SNE projections of shape (num_sentences, output_dim).
+    """    
+    X_embedded = TSNE(n_components = output_dim).fit_transform(sentence_vectors)
+    return X_embedded
 
