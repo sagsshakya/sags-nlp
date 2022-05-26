@@ -11,6 +11,8 @@ Description:
 from os import makedirs
 import os
 from random import randint
+import re
+from string import ascii_lowercase, ascii_uppercase, punctuation
 
 from matplotlib import pyplot as plt
 import numpy as np
@@ -74,3 +76,22 @@ def plot_scatter_cluster(sentence_vec, labels, closest_id, save_location = r'ima
         plt.ylabel('Principle Component 2')
         makedirs(save_location, exist_ok = True)
         plt.savefig(os.path.join(save_location, 'scatter_plot.png'), dpi = 300)
+
+
+def remove_unnecessary_characters(sentence):    
+    temp = sentence.replace('[^a-zA-Z-]', '')  # removing puctuations.
+    #temp = temp.replace('[a-zA-Z.]', '')    # removing english letters and digits.
+    
+    nepali_digits = ''.join([chr(2406 + ii) for ii in range(10)])
+    english_digits = ''.join([chr(48 + ii) for ii in range(10)])
+    #english_alphabets = ascii_uppercase + ascii_lowercase
+    other_punctuations = '।‘’' + '!"#$%&\'()*+,./:;<=>?@[\\]^_`{|}~' + chr(8211)
+    
+    to_remove = punctuation + nepali_digits + english_digits + other_punctuations + chr(8226)     
+    temp = temp.translate(str.maketrans('', '', to_remove))
+
+    return temp
+
+def generate_word_tokens(sentence):
+    return sentence.split()
+
