@@ -72,6 +72,5 @@ def plot_scatter_cluster(sentence_vec, labels, closest_id, save_location = r'ima
         plt.scatter(closest_points[:, 0], closest_points[:, -1], color = 'black', alpha = 0.7, marker = 'D', s = 50)
         plt.xlabel('Principle Component 1')
         plt.ylabel('Principle Component 2')
-        plt.legend()
         makedirs(save_location, exist_ok = True)
         plt.savefig(os.path.join(save_location, 'scatter_plot.png'), dpi = 300)
